@@ -1,0 +1,18 @@
+# Python
+venv/
+__pycache__/
+*.pyc
+# Java
+target/
+*.class
+# Node/Front-end
+node_modules/
+dist/
+# OS
+.DS_Store
+# LaTeX
+*.aux
+*.log
+*.out
+*.pdf
+*.synctex.gz
