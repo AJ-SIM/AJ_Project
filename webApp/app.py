@@ -60,6 +60,22 @@ with left_col:
         name='Hydrodynamic BL thickness δ(x)',
         line=dict(width=4)
     ))
+    # Add a horizontal line at a critical Reynolds number (example: 2300 or 5e5)
+    fig1.add_shape(
+    type="line",
+    x0=0, x1=40,  # in mm
+    y0=1, y1=1,
+    line=dict(color="black", width=1, dash="solid"),
+    name='Transition Threshold'
+    )
+   # Add a dummy trace for legend
+    fig1.add_trace(go.Scatter(
+    x=[None],
+    y=[None],
+    mode='lines',
+    name='Reference Line (1 mm)',
+    line=dict(color='black', width=1, dash='solid')
+    ))
     fig1.add_trace(go.Scatter(
         x=x*1000, y=delta_t*1000,
         mode='lines',

@@ -77,9 +77,9 @@ def show_html_report(fluid_name, Pr, delta_end, delta_t_end, Re_end, fig1=None, 
 
     st.markdown("### 🔍 Problem Description")
     st.markdown(
-        f"We investigate laminar boundary layer development along a vertical flat plate with a "
+        f"We investigate laminar boundary layer development along a flat plate with a "
         f"surface temperature of 60 °C. The fluid ({fluid_name}) enters at 40 °C with a set velocity. "
-        f"The goal is to understand boundary layer thicknesses and heat transfer regimes."
+        f"The goal is to understand boundary layer thicknesses."
     )
 
     st.markdown("### 📊 Methods and Results")
