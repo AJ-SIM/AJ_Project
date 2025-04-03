@@ -185,7 +185,7 @@ with left_col:
     Pr = nu / alpha
 
     # --- Calculation ---
-    x = np.linspace(0.0001, 0.040, 500)
+    x = np.linspace(0.0001, 0.036, 500)
     Re_x = U * x / nu
     delta = 5.0 * np.sqrt(nu * x / U)
     delta_t = delta / Pr**(1/3)
@@ -205,7 +205,7 @@ with left_col:
     ))
     fig1.add_shape(
         type="line",
-        x0=0, x1=40,
+        x0=0, x1=36,
         y0=1, y1=1,
         line=dict(color="black", width=1, dash="solid"),
         name='Reference Line'
@@ -226,7 +226,7 @@ with left_col:
         title=f"Boundary Layer Thickness vs x (U = {U} m/s)",
         xaxis_title="Distance from Leading Edge x (mm)",
         yaxis_title="Boundary Layer Thickness (mm)",
-        xaxis_range=[0, 40],
+        xaxis_range=[0, 36],
         yaxis_range=[0, 20],
         template="plotly_white",
         autosize=False,
@@ -247,7 +247,7 @@ with left_col:
         title="Reynolds Number vs x",
         xaxis_title="Distance from Leading Edge x (mm)",
         yaxis_title="Reynolds Number Reₓ",
-        xaxis_range=[0, 40],
+        xaxis_range=[0, 36],
         yaxis_range=[0, 5000],
         template="plotly_white",
         autosize=False,
