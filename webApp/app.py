@@ -108,7 +108,7 @@ with left_col:
         xaxis_title="Distance from Leading Edge x (mm)",
         yaxis_title="Reynolds Number Reₓ",
         xaxis_range=[0, 40],
-        yaxis_range=[0, 3000],
+        yaxis_range=[0, 5000],
         template="plotly_white",
         autosize=False,
         width=850,
