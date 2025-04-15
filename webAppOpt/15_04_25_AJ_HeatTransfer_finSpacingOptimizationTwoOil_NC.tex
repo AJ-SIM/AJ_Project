@@ -1,0 +1,299 @@
+\documentclass[12pt]{article}
+\usepackage{amsmath,graphicx,booktabs}
+\usepackage[margin=1in]{geometry}
+
+\begin{document}
+\tableofcontents
+\title{Natural Convection Heat Exchanger Analysis: Fins Necessity and Oil Selection}
+\author{}
+\date{\today}
+\maketitle
+
+\section{Introduction}
+A natural convection heat exchanger (condenser) is analyzed to determine whether adding fins is necessary to achieve a target heat transfer rate of 350W. The system consists of an array of horizontal tubes dissipating heat to a surrounding oil bath under free convection. Two oils are considered as the convective medium: \textbf{Shell Risella X430} and \textbf{Shell Risella C415}. These oils have different viscosity and thermal property profiles, leading to significantly different Prandtl numbers (ratio of momentum diffusivity to thermal diffusivity). At the expected film temperature of around 52.5°C (midway between the 60~°C tube surface and 45~°C bulk oil temperatures), Shell Risella X430 has an approximate $\textit{Pr} \approx 401$, whereas Shell Risella C415 has $\textit{Pr} \approx 126$. This large difference implies that X430 is much more viscous relative to its thermal diffusivity, which can strongly affect the convection performance. In this report, we compare the thermal performance of the two oils both with and without fins, evaluate the effect of fin spacing (including an empirically “optimal” spacing vs. a more practical “suggested” spacing), and decide which oil is more suitable for meeting the 350W requirement. Key performance metrics including the heat transfer rate $Q$, the convective heat transfer coefficient $h$, and the fin efficiency $\eta$ are examined. An engineering interpretation is provided to understand what a low fin efficiency signifies for the design.
+
+\section{Methodology}
+
+\subsection{Geometry and Setup}
+The heat exchanger under study is a bank of tubes with aluminum plate fins attached to enhance natural convection. There are 24 rows of tubes in 2 columns (48 tubes total) arranged in a staggered vertical stack (forming a cross-flow fin array). Each tube has an outer diameter $D = 0.01~\text{m}$ and a length (span into the page) of 0.7m. The aluminum fins (thermal conductivity $k_{\text{fin}} \approx 237\text{W/mK}$) are thin rectangular plates of height $H = 0.5~\text{m}$ (vertical extent) and width $W = 0.036~\text{m}$ (horizontal protrusion from each side of a tube), with thickness $t = 0.001~\text{m}$. Fins are placed on the tubes with a certain spacing $S$ between adjacent fins. In a given column of fins, $N_{\text{fins}}$ fins create $N_{\text{channels}} = N_{\text{fins}} + 1$ vertical channels for upward buoyant flow. The tube surface itself (areas not covered by fins) also contributes as “bare” area. The ambient (oil bath) temperature is $T_\infty = 45~^\circ\text{C}$, and the tube surface temperature is maintained at $T_s = 60~^\circ\text{C}$, giving a driving temperature difference of $\Delta T = 15\text{K}$ for convection. Key geometric and thermal parameters are summarized in Table~\ref{tab:geom}.
+
+\begin{table}[h!]
+\centering
+\caption{Key geometric parameters and thermal conditions of the heat exchanger.}
+\label{tab:geom}
+\begin{tabular}{ll}
+\toprule
+Tube outer diameter, $D$ & 0.01 m \\
+Fin height, $H$ & 0.50 m \\
+Fin width (per side), $W$ & 0.036 m \\
+Fin thickness, $t$ & 0.001 m \\
+Fin material thermal conductivity, $k_{\text{fin}}$ & 237 W/m$\cdot$K (Aluminum) \\
+Tube bank arrangement & 24 rows $\times$ 2 columns (48 tubes) \\
+Tube span length & 0.70 m per tube \\
+Surface temperature, $T_s$ & 60 °C \\
+Ambient (oil bath) temperature, $T_\infty$ & 45 °C \\
+Temperature difference, $\Delta T = T_s - T_\infty$ & 15 K \\
+Target heat dissipation, $Q_{\text{target}}$ & 350 W \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Fluid Properties and Prandtl Number}
+Relevant thermophysical properties of the oils were evaluated at the film temperature $T_f \approx 52.5~^\circ\text{C}$ (the average of the surface and ambient temperatures, appropriate for natural convection calculations). Table~\ref{tab:properties} lists the kinematic viscosity $\nu$, thermal expansion coefficient $\beta$, density $\rho$, specific heat $c_p$, thermal diffusivity $\alpha$, thermal conductivity $k$, and resulting Prandtl number $\textit{Pr} = \nu/\alpha$ for each oil at $T_f$. The values are based on data from Shell for the two oils (with viscosity interpolated between 40~°C and 100~°C data points). It is evident that Shell Risella X430 is a significantly more viscous fluid, yielding a Prandtl number more than three times that of Shell Risella C415. High $\textit{Pr}$ in X~430 means that momentum diffusivity dominates over thermal diffusivity – a trait of oils that tends to result in thicker velocity boundary layers and comparatively thinner thermal boundary layers. In practical terms, this generally suppresses convective currents for a given buoyancy force, leading to lower convective heat transfer coefficients $h$ in the high-Pr fluid. We will see the impact of this when comparing $h$ and $Q$ for the two oils.
+
+\begin{table}[h!]
+\centering
+\caption{Thermophysical properties of Shell Risella oils at $T_f \approx 52.5~^\circ\text{C}$.}
+\label{tab:properties}
+\begin{tabular}{lccccccc}
+\toprule
+Oil & $\nu$ (m$^2$/s) & $\beta$ (1/K) & $\rho$ (kg/m$^3$) & $c_p$ (J/kg$\cdot$K) & $\alpha$ (m$^2$/s) & $Pr$ & $k$ (W/m$\cdot$K) \\
+\midrule
+ X 430 & $3.0\times10^{-5}$ & $9.0\times10^{-4}$ & 828 & 2100 & $7.48\times10^{-8}$ & 401 & 0.13 \\
+ C 415 & $9.4\times10^{-6}$ & $9.0\times10^{-4}$ & 828 & 2100 & $7.48\times10^{-8}$ & 126 & 0.13 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Note: In Table~\ref{tab:properties}, $\nu$ is kinematic viscosity, $\beta$ is the volumetric thermal expansion coefficient (approximately $9\times10^{-4}$ K$^{-1}$ for both oils in this temperature range), $\alpha = k/(\rho c_p)$ is thermal diffusivity, and $Pr = \nu/\alpha$. The thermal conductivity $k$, density $\rho$, and specific heat $c_p$ are taken to be roughly the same for both oils (as they are similar mineral oils), so the large difference in $Pr$ stems primarily from the difference in viscosity.
+
+\subsection{Natural Convection Correlations}
+Heat transfer by natural convection was quantified using standard dimensionless parameters and correlations. The characteristic temperature difference for buoyancy is $\Delta T = 15\text{K}$, and the gravitational acceleration $g = 9.81\text{m/s}^2$. We define the Rayleigh number based on a characteristic length $\ell$ (to be specified for each geometry) as:
+\begin{equation}
+Ra_{\ell} = \frac{g \beta \Delta T \ell^3}{\nu \alpha},
+\label{eq:Ra}
+\end{equation}
+which combines the Grashof and Prandtl numbers and governs the onset and strength of convection. For flow over the bare horizontal tubes (no fins), $\ell$ was taken as the tube outer diameter $D$, and $Ra_D$ is the Rayleigh number for a horizontal cylinder in the oil. The convective coefficient for the bare tube array was estimated using the Churchill-Chu correlation for natural convection around a horizontal cylinder, which provides a Nusselt number $Nu_D$ (using $D$ as the characteristic length). In compact form, this correlation can be written as:
+\begin{equation}
+Nu_D = \left[0.60 + \frac{0.387 Ra_D^{1/6}}{\left(1 + (0.559/Pr)^{9/16}\right)^{8/27}}\right]^2,
+\end{equation}
+valid for $Ra_D$ up to about $10^{12}$. This correlation is suitable for high-Prandtl-number fluids like the oils in this study, as it accounts for the Prandtl number effect and converges to a $\text{Ra}_D^{1/4}$ behavior in the laminar regime typical for high-Pr fluids \cite{Fand1983}. For added confidence with high-Pr oils, the correlation by Fand and Brucker (1983) could be considered, which is specifically validated for Prandtl numbers up to 350 and includes viscous dissipation effects, showing agreement within 3–4\% for $Ra_D > 5\times10^5$ \cite{Fand1983}. However, given the modest temperature difference ($\Delta T = 15\text{K}$), viscous dissipation is negligible, and the Churchill-Chu correlation is deemed sufficient for this analysis. 
+
+In a staggered tube bank with 24 rows, the rising buoyant plumes from lower tubes affect the convection around upper tubes, leading to a reduction in the Nusselt number for higher rows due to plume coalescence and pre-heating of the fluid \cite{Kitamura2018}. Studies indicate that the Nusselt number may decrease by 20–30\% for upper rows in tightly spaced arrays, with the bottom row approaching the single-cylinder Nusselt number \cite{Kitamura2018}. For simplicity, the Churchill-Chu correlation was applied uniformly across all tubes in this analysis, but we considered a coefficient to reduce the Nusselt number; here, the coefficient is considered to be $0.12$, meaning that the Russell number decreases by 88 percent, which is conservative. Also, a row-by-row correction or a correlation accounting for vertical and horizontal pitch (e.g., Kitamura et al., 2018) could refine the estimate by incorporating the effects of tube spacing and row position \cite{Kitamura2018}.
+
+The heat transfer coefficient for the bare tube $h_{\text{bare}}$ is then obtained from $Nu_D$ by $h_{\text{bare}} = Nu_D \frac{k}{D}$, where $k$ is the thermal conductivity of the oil. This $h_{\text{bare}}$ (in W/m$^2$K) is used to compute the no-fin heat transfer rate.
+
+For the finned configuration, the flow can be idealized as occurring in vertical channels formed between adjacent fins. Thus, for finned cases the characteristic length in the Rayleigh number is taken as the fin spacing $S$ (distance between two fins), and $Ra_S = \frac{g \beta \Delta T S^3}{\nu \alpha}$ characterizes the buoyant flow in a channel of gap $S$ and height $H$. The convective performance of an array of vertical fins can be predicted by an empirical correlation originally attributed to Elenbaas for natural convection between parallel plates. In this analysis, we employed the following Nusselt number correlation for the channel flow between fins:
+\begin{equation}
+Nu_S = \frac{1}{24} Ra_S \frac{S}{H} \left[1 - \exp\left(-\frac{35}{Ra_S (S/H)}\right)\right]^{0.75},
+\label{eq:Nu}
+\end{equation}
+where $H$ is the fin (channel) height. This correlation captures the fact that for very narrow spacing $S$, convection is suppressed (the exponential term accounts for boundary layer merging/choking in tight channels), while for very wide spacing the factor $S/H$ reduces $Nu_S$ (since fewer fins fit in a given width, limiting total area). Using Eq.~\eqref{eq:Nu}, we can determine the average convective heat transfer coefficient on the fin surfaces as $h_{\text{fins}} = Nu_S \frac{k}{S}$. Note that $h_{\text{fins}}$ generally decreases as $S$ becomes smaller (due to the flow restriction), even though the available fin surface area increases as $S$ decreases. This trade-off leads to the existence of an optimal fin spacing, as discussed next.
+
+\subsection{Optimal and Suggested Fin Spacing}
+For a fixed total finned length (0.7~m in our case), using more fins (closer spacing $S$) increases the total surface area available for convection, but at the same time each fin’s individual convection coefficient drops because the channels become tighter and flow is impeded. There is an optimal spacing $S_{\text{opt}}$ that maximizes the total heat transfer $Q$. We determined $S_{\text{opt}}$ for each oil via a numerical optimization: essentially maximizing the objective $Q(S)$. In addition, we computed a “suggested” fin spacing $S_{\text{suggested}}$ based on an empirical formula. According to natural convection theory for vertical fin arrays (symmetric isothermal plates), the optimal spacing satisfies an implicit relation $S_{\text{opt}} = 2.71 \left( \frac{Ra_S}{S_{\text{opt}}^3 H} \right)^{-1/4}$. The solution of this equation gives $S_{\text{opt}}$. Meanwhile, a spacing about 1.71 times larger than $S_{\text{opt}}$ (often denoted $S_{\max}$) corresponds to the point where convection from each individual fin is maximized (essentially no interference between fins). In practice, designers may not choose the absolute minimum spacing because extremely tight fin spacing yields diminishing returns and can be harder to manufacture or keep clean. Thus we consider $S_{\text{suggested}} \approx 1.71 S_{\text{opt}}$ as a more conservative design choice, in line with published recommendations. The outcomes for both $S_{\text{opt}}$ and $S_{\text{suggested}}$ will be compared.
+
+\subsection{Fin Efficiency and Heat Transfer Rate Calculation}
+When fins are used, not all the fin area is equally effective due to the temperature gradient along the fin. We define the fin efficiency $\eta$ as the ratio of the actual heat dissipated by the fin to the heat that would be dissipated if the entire fin were at the base temperature $T_s$. For straight constant-thickness fins, $\eta$ can be calculated using the standard formula:
+\begin{equation}
+\eta = \frac{\tanh(m L)}{m L}, \qquad \text{with} \quad m = \sqrt{\frac{2 h_{\text{fins}}}{k_{\text{fin}} t}},
+\label{eq:eta}
+\end{equation}
+where $L$ here is the fin half-height for a fin losing heat from both sides. In our case $L = H = 0.5~\text{m}$ (each fin extends that length vertically, exposed to convection on both faces). This efficiency formula accounts for the exponentially decaying temperature profile along the fin: a large $mL$ (which occurs with high $h_{\text{fins}}$, high fin length, or thin/low-$k$ fins) yields $\eta \ll 1$, meaning the fin tip is much cooler than the base and the fin’s extremity is underutilized. Conversely, small $mL$ (low $h$ or short fins) gives $\eta \approx 1$ (the fin is nearly isothermal). In our design, $mL$ will not be small; indeed we will find $\eta$ to be on the order of only 10%, indicating most of the fin area is thermally underutilized. Despite that, the fins can still greatly boost total heat transfer by sheer increase of area.
+
+Finally, the total heat transfer rate $Q$ from the entire tube bank is computed by summing contributions from the bare tube surfaces (unfinned circumference portions) and from fin surfaces. Assuming the fins and tubes are all at the same base temperature $T_s$, we can write:
+\begin{equation}
+Q = h_{\text{bare}} A_{\text{bare}} \Delta T + h_{\text{fins}} \eta A_{\text{fins}} \Delta T,
+\label{eq:Q}
+\end{equation}
+where $A_{\text{bare}}$ is the total surface area of the tubes themselves (excluding fin coverage) and $A_{\text{fins}}$ is the total area of all fins (both sides of each fin). For the no-fins case, only the first term contributes. For finned cases, the fin term is added; note that we use $h_{\text{fins}}$ for the fin surfaces and $h_{\text{bare}}$ (which may differ slightly, but in our simplified approach we took $h_{\text{bare}} \approx h_{\text{fins}}$ for the area not covered by fins in the channels). The effective overall heat transfer coefficient $h_{\text{overall}}$ for a finned configuration can be defined by $Q = h_{\text{overall}} (A_{\text{bare}}+A_{\text{fins}}) \Delta T$, but we report $h_{\text{overall}}$ mainly to compare how the presence of fins lowers the average heat removal per unit area.
+
+\section{Results}
+
+\subsection{Optimal vs. Suggested Fin Spacing}
+Using the methodology above, we obtained the optimal fin spacing $S_{\text{opt}}$ for each oil via numerical optimization of $Q(S)$. We also calculated the suggested spacing $S_{\text{suggested}} = 1.71 S_{\text{opt}}$ based on the empirical relation. Table~\ref{tab:spacing} summarizes the spacings found (in millimeters). Notably, the lower-viscosity Shell Risella C415 permits a tighter optimal spacing (about 2.93mm) than Shell Risella X430 (about 3.85mm). This aligns with expectation: the more fluid oil (C415, lower $Pr$) experiences less viscous friction in narrow channels and thus can benefit from smaller gaps, whereas the heavier oil X430 finds its optimum at a somewhat wider channel to mitigate excessive viscous resistance. The suggested spacings are roughly double the optimal values (7.90mm for X430 and 5.92mm for C415), representing a more open fin array. As anticipated, $S_{\text{suggested}}$ is such that each fin is closer to its isolated performance limit (especially for X~430, which needs wider spacing to approach that condition).
+
+\begin{table}[h!]
+\centering
+\caption{Optimal and suggested fin spacing for each oil (in mm).}
+\label{tab:spacing}
+\begin{tabular}{lcc}
+\toprule
+Oil & $S_{\text{opt}}$ (mm) & $S_{\text{suggested}}$ (mm) \\
+\midrule
+Shell Risella X 430 & 3.85 & 7.90 \\
+Shell Risella C 415 & 2.93 & 5.92 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Heat Transfer Performance Without Fins (Bare Tubes)}
+For the baseline case with no fins, the total heat transfer area is just the outer surface of the 48 tubes. Using the Churchill-Chu correlation and the properties of each oil, we found the average convective coefficient and heat dissipation as shown in Table~\ref{tab:noFin}. Shell Risella C415, owing to its much lower viscosity (and thus higher $Ra_D$), achieves a higher $h$ on the bare tubes (19W/m$^2$K vs. 14W/m$^2$K for X430). Consequently, the bare-tube heat loss with C415 is about 301W, significantly more than the 222W obtained with X430 under identical conditions. However, importantly, neither oil in the bare configuration meets the 350W target – C415 comes closer but is still shy of the goal by about 14%, and X430 only achieves 63% of the target. This indicates that without fins (and without other changes like increasing the temperature difference or adding more tubes), the target of 350W cannot be reached, especially for the more viscous X430 oil. Thus, some form of augmentation (like fins) is necessary, particularly if Shell Risella X430 is used as the surrounding fluid.
+
+\begin{table}[h!]
+\centering
+\caption{Bare tube (no fins) convective performance for each oil.}
+\label{tab:noFin}
+\begin{tabular}{lcc}
+\toprule
+Oil & $h_{\text{bare}}$ (W/m$^2$K) & $Q_{\text{no-fin}}$ (W) \\
+\midrule
+Shell Risella X 430 & 14.0 & 222.0 \\
+Shell Risella C 415 & 19.0 & 300.8 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Heat Transfer with Fins – Optimal and Suggested Configurations}
+When fins are added, the total heat transfer increases substantially for both oils. Table~\ref{tab:performance} presents the heat transfer results for the two oils in three scenarios: bare tubes, finned with optimal spacing, and finned with suggested spacing. Several observations can be made. First, the inclusion of fins (even at the larger suggested spacing) raises $Q$ well above the 350W target for both oils. With optimal fin spacing, Shell Risella X430 can achieve about 511W, and Shell Risella C415 achieves roughly 719W – more than double the target in the latter case. Even with the more widely spaced (fewer fins) “suggested” configuration, X430 yields 415W and C415 about 590W. This confirms that using fins is not only helpful but indeed necessary to comfortably meet or exceed the 350W requirement, especially if using the less favorable X430 oil. In fact, for Shell Risella C415 one could argue that the target might be barely reached without fins by some margin (since 300.8W is within 50W of the goal, a moderate increase in $\Delta T$ or a slight extension of the tube bank could potentially achieve 350W). However, adding fins provides a large performance boost and a design safety margin, making it the clear choice for meeting the thermal duty reliably. For Shell Risella X430, fins are unquestionably required, as 222W vs. 350~W is a large shortfall without them.
+
+Looking at the convective heat transfer coefficients $h_{\text{overall}}$ in Table~\ref{tab:performance}, we note an interesting effect: the \emph{average} $h$ (defined as $Q/(A_{\text{total}}\Delta T)$) \emph{decreases} when fins are added, dropping from 14–19W/m$^2$K (bare) down to about 5–8W/m$^2$K in the finned cases. This is expected because adding fins greatly increases the surface area $A_{\text{total}}$, but the total $Q$ does not increase proportionally (due to diminishing $h$ in the fin channels). For example, with optimal fins, X430’s $h_{\text{overall}}$ is only 5.46W/m$^2$K, and C415’s is 6.42W/m$^2$K. The suggested spacing cases have slightly higher $h_{\text{overall}}$ (since they have fewer fins and thus smaller area, yielding 7.17 and 8.39~W/m$^2$K respectively) but still much lower than the bare-tube $h$. This illustrates the classic trade-off: fins increase area at the cost of reducing the average heat transfer coefficient. The net effect, however, is a gain in $Q$ because the area increase outweighs the $h$ reduction within the range considered.
+
+\begin{table}[h!]
+\centering
+\caption{Comparison of heat transfer performance with and without fins for each oil.}
+\label{tab:performance}
+\begin{tabular}{lcccc}
+\toprule
+& \multicolumn{2}{c}{Shell Risella X 430} & \multicolumn{2}{c}{Shell Risella C 415} \\
+\cmidrule(lr){2-3}\cmidrule(lr){4-5}
+Scenario & $Q$ (W) & $h_{\text{overall}}$ (W/m$^2$K) & $Q$ (W) & $h_{\text{overall}}$ (W/m$^2$K) \\
+\midrule
+No fins (bare tubes) & 222.0 & 14.0 & 300.8 & 19.0 \\
+Fins @ $S_{\text{opt}}$ & 511.3 & 5.46 & 718.8 & 6.42 \\
+Fins @ $S_{\text{suggested}}$ & 415.3 & 7.17 & 590.1 & 8.39 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Fin Efficiency}
+The efficiency of the fins, $\eta$, was found to be quite low in all cases. For the optimal spacing configurations, $\eta_{\text{opt}} \approx 12.7\%$ for X430 and $\approx 10.9\%$ for C415. The suggested spacing configurations yielded even slightly lower efficiencies: $\eta_{\text{suggested}} \approx 10.3\%$ (X430) and $\approx 8.9\%$ (C415). These percentages indicate that only around 10\% of the fin area is as effective as it would be if the fins were isothermal. In other words, the majority of each fin is operating at a reduced temperature difference relative to the base, especially near the tips. This isn’t surprising given the fins are 0.5m tall; natural convection is relatively weak, and thus a significant temperature gradient can develop along such a long fin.
+
+Interestingly, the heavier oil (X430) shows a \emph{slightly} higher fin efficiency than C415. This is because X430’s convective coefficient $h_{\text{fins}}$ is lower (due to its high viscosity and wider spacing), which makes $m = \sqrt{2h/(k_{\text{fin}} t)}$ smaller; a smaller $h$ leads to a more uniform fin temperature distribution (less aggressive cooling), hence a bit higher $\eta$. By contrast, C~415’s higher $h$ cools the fin more effectively, but that also means its fin tips reach closer to ambient temperature, lowering the efficiency. Nonetheless, in both cases $\eta$ is very low, on the order of 10\%.
+
+\begin{table}[h!]
+\centering
+\caption{Fin efficiency for each oil with optimal and suggested spacing.}
+\label{tab:eta}
+\begin{tabular}{lcc}
+\toprule
+Oil & $\eta_{\text{opt}}$ (\%) & $\eta_{\text{suggested}}$ (\%) \\
+\midrule
+Shell Risella X 430 & 12.74 & 10.33 \\
+Shell Risella C 415 & 10.90 & 8.94 \\
+\bottomrule
+\end{tabular}
+\end{table}
+\begin{figure}[h!]    \centering
+    \includegraphics[width=0.5\linewidth]{Q_finSpacing_Oils.png}
+\caption{Heat transfer rate $Q$ vs. fin spacing $S$ for the two oils (blue: Shell Risella X430, green: Shell Risella C415). Each curve exhibits a single maximum at $S_{\text{opt}}$ (indicated by the circular markers). The square markers denote the “suggested” spacing (approximately twice the optimal spacing), which yields a slightly lower $Q$. Shell Risella C415 not only achieves a higher peak $Q$ than X430 but also attains this peak at a smaller optimal spacing. The red dashed line marks the target $Q=350$W. One can see that as $S$ becomes large (toward the far right, implying very few or no fins), the predicted $Q$ for X430 falls well below 350W, whereas for C415 it approaches roughly 350W (consistent with the bare-tube results). This highlights that fins are essential for X430 to meet the target, while C415 can nearly reach it without fins but exceeds it comfortably with any finning.}
+\label{fig:heat_transfer}
+\end{figure}
+
+\section{Discussion}
+The results clearly demonstrate the necessity of fins and the superiority of one oil over the other in this natural convection application. We discuss these findings in detail below.
+
+\textbf{Need for Fins to Reach 350~W:} From the bare-tube analysis, Shell Risella X430 was unable to reach even 65\% of the target heat dissipation (only 222W out of 350W). Shell Risella C415 performed better at 301W, but still fell short of the target by about 49W. This shortfall with C415 would likely require a substantial temperature increase or a larger heat exchanger to overcome if fins were not used. The addition of fins, however, dramatically increases the heat transfer. Even a non-optimized fin arrangement (e.g. using the suggested spacing) boosts X430’s heat rejection to 415W and C415’s to 590W, both well above 350W. Therefore, in the context of this design, the use of fins is indeed necessary to reliably achieve the 350W target, particularly so for the more viscous X430 oil. In practice, one could choose to operate with C415 without fins if modifications are made (since it’s relatively close to the goal), but using fins provides a significant performance margin and is the more sound engineering choice.
+
+\textbf{Comparison of Oils – Shell Risella C415 vs. X430:} Shell Risella C415 emerges as the more suitable oil for achieving high natural convection performance. Across all scenarios examined, C415 yielded higher convective coefficients and heat transfer rates than X430. For instance, without fins C415 gave about 36\% higher $Q$ than X430. With fins (optimal spacing), C415 delivered 718W vs X430’s 511W (roughly 40\% higher). The fundamental reason is the difference in Prandtl number and viscosity: C415’s lower viscosity (and lower $Pr$) means buoyant flow can circulate more freely, resulting in higher Rayleigh numbers and Nusselt numbers for the same geometry. In contrast, X430’s high viscosity damps the convective currents, yielding lower $h$. Another way to see this: at the optimal fin spacing, the channel flow for C415 remains effective even when the fins are very closely spaced (2.9mm apart), whereas X430 needed a larger gap (3.85mm) to not stifle the flow completely. This implies a larger number of fins (hence more area) can be utilized with C415, compounding its advantage.
+
+Therefore, if one had to choose between the oils for this application, Shell Risella C~415 is more suitable for meeting or exceeding the 350~W heat transfer requirement. It not only achieves higher heat transfer rates but also does so with a smaller optimal fin spacing (meaning the heat exchanger could be made more compact if designed specifically for that oil).
+
+\textbf{Impact of Fin Spacing – Optimal vs. Suggested:} The optimal spacing $S_{\text{opt}}$ found for each oil maximizes $Q$, but in doing so results in very tightly packed fins and extremely low fin efficiency. The suggested spacing $S_{\text{suggested}} \approx 1.7 S_{\text{opt}}$ represents a trade-off: fewer fins (hence less total area) but slightly better flow in each channel (higher $h$). Our results show that using the suggested spacing instead of the absolute optimal reduces $Q$ by about 18–20\%. For example, X430’s $Q$ dropped from 511W to 415W (an 18.8\% reduction) when using $S_{\text{suggested}}$ instead of $S_{\text{opt}}$. For C415, $Q$ went from 718W to 590W (a 17.9\% drop). These losses might be acceptable considering the benefits: the fin count is greatly reduced (roughly half as many fins, since spacing doubled), which can lower manufacturing complexity and cost, and each fin will run a bit “hotter” (less airflow choking), possibly delaying fouling or allowing easier cleaning. Indeed, the suggested spacing corresponds to a regime where each fin is closer to its individual maximum performance (near-isolated fins).
+
+Thus, a designer might opt for something near the suggested spacing if the slightly lower $Q$ is still above the requirement, in exchange for a more robust design. In our case, even the suggested spacing yields $Q$ well above 350~W for both oils, so adopting it would be sensible. If, however, maximum compactness or thermal performance is paramount, one could push toward the tighter optimum spacing at the cost of rapidly diminishing returns and more challenging construction. This is a typical engineering trade-off between performance and practicality.
+
+\textbf{Fin Efficiency and Design Implications:} The extremely low fin efficiencies (9–13\%) calculated here signal that most of the fin length is operating at a small temperature difference (the fin tips are barely warmer than the ambient fluid). A low $\eta$ in itself is not necessarily a problem as long as the total $Q$ is sufficient – after all, even “inefficient” fins added enough area to more than double the heat transfer in our study. However, low efficiency does imply that material is being used rather inefficiently: a large portion of the fin isn’t contributing much to heat transfer, which could be seen as wasted weight or volume.
+
+From a design perspective, one might consider whether the fins could be shortened to improve efficiency without sacrificing too much $Q$. In our scenario, the fins are 0.5m tall primarily to span the vertical distance between tube rows; we can’t easily shorten them without redesigning the tube layout. But if there were flexibility, using two shorter fin arrays separated by a gap (interrupting the fin) can sometimes boost efficiency and still provide area, because each shorter fin would have a higher $\eta$. Another implication is that adding even more fins beyond the optimum (to try to gain more $Q$) would be counterproductive – not only does $h$ drop further, but $\eta$ would drop as well, so you’d be adding a lot of area for very little gain (and eventually $Q$ would decrease if fins are too close). The optimal spacing essentially finds the balance point.
+
+In summary, low fin efficiency in this design highlights that the fins are long relative to the convective ability of the fluid; designers should acknowledge that while such fins do work (to meet the requirement), they do so inefficiently, and any additional fin area beyond what’s used is largely wasted. If weight or material usage were a concern, one would aim to operate at a higher $\eta$ (perhaps by increasing spacing or shortening fins) while still meeting $Q$ – again a compromise.
+
+\textbf{Influence of Prandtl Number:} The stark contrast between the oils underscores the role of the Prandtl number in natural convection. Higher $Pr$ (as for X430) generally leads to slower-moving but higher-gradient boundary layers, which can reduce overall convective heat transfer. In our calculations, for the same geometric parameters, X430’s Rayleigh number $Ra$ was much lower than C415’s (since $Ra \propto 1/\nu$ and X430’s $\nu$ was 3.2 times larger). This led to lower Nusselt numbers and $h$. Moreover, the optimum fin spacing itself is influenced by $Pr$ through $Ra$: X430’s lower $Ra_S$ pushed its $S_{\text{opt}}$ to a larger value (as seen in the empirical relation, $S_{\text{opt}} \sim (Ra_S)^{-1/4}$ for the fin array). Thus, a designer should always consider the fluid’s Prandtl number when designing natural convection fins: fluids with very high $Pr$ (like viscous oils) might require more open fin arrangements and will yield lower $h$ values, possibly necessitating either larger temperature differences or larger surface areas to achieve the same $Q$ as a lower-$Pr$ fluid.
+
+In our case, simply switching from X430 to C415 (without any other changes) was enough to boost $Q_{\text{no-fin}}$ by 78W and $Q_{\text{opt-fin}}$ by over 200W, purely due to fluid properties. That is a dramatic illustration of how important fluid selection is in natural convection design.
+
+\section{Conclusion}
+In conclusion, this engineering analysis indicates that the use of fins is required to reach the target heat transfer rate of 350~W under the given natural convection conditions, especially if using a high-viscosity oil like Shell Risella X430. Without fins, X430 fell far short of the target, and even the better-performing Shell Risella C415 was slightly under the requirement. By adding fins, the heat transfer was greatly enhanced: even a conservatively spaced fin array exceeded 350W for both oils, and an optimally dense fin array provided 1.5 to 2 times the target $Q$.
+
+Between the two oils, Shell Risella C~415 is the more suitable choice for achieving superior thermal performance. It consistently yielded higher convective coefficients and heat transfer rates than Shell Risella X430 in all scenarios examined. This is attributed to its lower Prandtl number (lower viscosity), which promotes stronger natural convective flow. In practical terms, using C415 would allow a more compact or efficient heat exchanger design to meet the 350W requirement, whereas X430 would necessitate a larger or more fin-dense design to compensate for its poorer convective capability.
+
+We also explored the effect of fin spacing on performance. The optimal fin spacing for maximum $Q$ was found to be about 3.9mm for X430 and 2.9mm for C415 under our geometry, confirming that the heavier oil needs a looser fin spacing. A somewhat larger spacing (approximately twice the optimal) is recommended by empirical studies to ensure fins operate near their peak individual efficiency. Implementing this suggested spacing sacrifices roughly 18\% of the maximum heat transfer, but still easily met the design target and offers practical benefits in manufacturing and maintenance.
+
+Finally, the analysis revealed that the fin efficiency $\eta$ is very low (around 10\%) in these natural convection finned systems. This implies that although the fins successfully boost total heat removal, much of their surface area is underutilized. In design terms, a low efficiency encourages scrutiny of whether the fins could be optimized further – for instance, by shortening them or spacing them slightly more – to use material more effectively. However, even inefficient fins can be justified if they are the key to reaching a necessary performance level, as is the case here for meeting 350W with X430 oil. The key is to find a balance: provide enough fin area to meet the heat duty, but not so much that you incur unnecessary material/cost or severely diminishing returns. The use of the suggested spacing is one way to strike this balance.
+
+In summary, to answer the initial questions: Yes, fins (in fact a finned heat sink design) are needed to attain 350W under these natural convection conditions, and Shell Risella C415 is the preferable oil for maximizing thermal performance. This study highlights how fluid properties and fin design interact in natural convection, guiding engineers toward informed decisions on both the working fluid and the geometric configuration to meet thermal requirements.
+
+
+\appendix
+\section{Effect of Changing the Churchill-Chu Coefficient in Tube Bank Analysis}
+
+In natural convection studies for tube arrays, the Churchill-Chu correlation is commonly used to estimate the Nusselt number ($Nu$) and corresponding heat transfer coefficient ($h$) for bare tubes. In our current model, the Churchill-Chu formula is scaled by a coefficient of 0.12. We investigated the implications of increasing this scaling factor to 0.15.
+
+\subsection*{Quantitative Impact}
+
+Using representative data for Shell Risella X430 and C415 oils, the change resulted in:
+
+\begin{itemize}
+    \item A 25\% increase in the Nusselt number.
+    \item A 25\% increase in the heat transfer coefficient $h$.
+\end{itemize}
+
+For example:
+
+\begin{itemize}
+    \item For Shell Risella X430, $h$ rose from 14.0 to 17.5 W/m²·K.
+    \item For Shell Risella C415, $h$ rose from 19.0 to 23.8 W/m²·K.
+\end{itemize}
+
+\subsection*{Q (Heat Transfer Rate) Impact}
+
+The total heat removed from the tube bank without fins is given by:
+
+\[
+Q = h \cdot A \cdot \Delta T
+\]
+
+Where $A$ is the surface area of the tubes and $\Delta T$ is the temperature difference. Since $h$ increases by 25\%, $Q$ also increases by approximately 25\% in the no-fin configuration (assuming $A$ and $\Delta T$ are constant).
+
+For example:
+\begin{itemize}
+    \item For Shell Risella X430, $Q$ increases from approx.\ 222 W to 277 W.
+    \item For Shell Risella C415, $Q$ increases from approx.\ 301 W to 376 W.
+\end{itemize}
+
+Thus, Shell Risella C415 exceeds the 350 W target without any fins when the coefficient is increased to 0.15.
+
+\subsection*{Why Adjust the Coefficient for Tube Banks}
+
+The Churchill-Chu correlation was derived for isolated horizontal cylinders. In a tube bank—especially one in close proximity (like a 24×2 finned array)—adjacent tubes interfere with each other’s thermal boundary layers and restrict natural convection circulation. This leads to lower effective $Nu$ values compared to isolated tubes.
+
+Hence, using a scaling coefficient like 0.12 instead of the textbook 1.0 helps correct for:
+
+\begin{itemize}
+    \item Shadowing effects,
+    \item Multi-body flow interference,
+    \item Suppressed local convection due to vertical stacking.
+\end{itemize}
+
+The adjustment is a calibration step: it tunes theoretical predictions to better match experimental or practical expectations for packed arrays.
+
+\subsection*{Conclusion}
+
+Increasing the coefficient from 0.12 to 0.15 boosts performance predictions by 25\%, potentially overestimating $h$ for tightly packed tube banks. The default value of 0.12 appears conservative and more representative of real-world behavior in arrays. However, if experimental validation suggests higher performance, adjusting this value may be justified. Moreover, the increase in $Q$ due to the higher $h$ could shift system requirements—for instance, potentially eliminating the need for fins in certain oil configurations.
+
+
+\section{References}
+\begin{thebibliography}{9}
+\bibitem{Churchill1975}
+S.W. Churchill and H.H.S. Chu,
+``Correlating equations for laminar and turbulent free convection from a horizontal cylinder,''
+\emph{Int. J. Heat Mass Transfer}, vol. 18, pp. 1049--1053, 1975.
+
+\bibitem{Fand1983}
+R.M. Fand and E.W. Brucker,
+``A correlation for heat transfer by natural convection from horizontal cylinders that accounts for viscous dissipation,''
+\emph{Int. J. Heat Mass Transfer}, vol. 26, pp. 709--726, 1983.
+
+\bibitem{Kitamura2018}
+K. Kitamura et al.,
+``Natural convective heat transfer from staggered banks of horizontal cylinders,''
+\emph{Trans. JSME}, vol. 84, 2018.
+
+\bibitem{Abdelmaksoud2023}
+A. Abdelmaksoud and H. Elbakhshawangy,
+``Heat transfer characteristics for natural convection through inline and staggered horizontal tube banks,''
+\emph{Int. J. of Novel Research in EM Engineering}, 2023.
+\end{thebibliography}
+
+\end{document}
