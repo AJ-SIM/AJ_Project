@@ -201,17 +201,18 @@ with right_col:
         file_name="15_04_25_AJ_HeatTransfer_finSpacingOptimizationTwoOil_NC_bar_comparison.pdf",
         mime="application/pdf"
     )
-    # Load your existing PDF file
-    with open("15_04_25_AJ_HeatTransfer_finSpacingOptimizationTwoOil_NC_finalReport.pdf", "rb") as file:
-        pdf_data = file.read()
+    # # Load your existing PDF file
+    # with open("15_04_25_AJ_HeatTransfer_finSpacingOptimizationTwoOil_NC_finalReport.pdf", "rb") as file:
+    #     pdf_data = file.read()
 
-    # Add a download button for the PDF
-    st.download_button(
-        label="📄 Download Final Report (PDF)",
-        data=pdf_data,
-        file_name="15_04_25_AJ_HeatTransfer_finSpacingOptimizationTwoOil_NC.pdf",
-        mime="application/pdf"
-    )
+    # # Add a download button for the PDF
+    # st.download_button(
+    #     label="📄 Download Final Report (PDF)",
+    #     data=pdf_data,
+    #     file_name="15_04_25_AJ_HeatTransfer_finSpacingOptimizationTwoOil_NC.pdf",
+    #     mime="application/pdf"
+    # )
+    
     # Show description last
     st.markdown("---")
     render_description(fluid_data, results_summary, constants)
