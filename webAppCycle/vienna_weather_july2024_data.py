@@ -9,7 +9,8 @@ def compute_relative_humidity(temp_c, dew_point_c):
     return rh
 
 def load_weather_data():
-    folder_path = r"C:\Users\Besitzer\Simulation\AJ_Project\webAppCycle"
+    folder_path = os.path.dirname(__file__)
+    # r"C:\Users\Besitzer\Simulation\AJ_Project\webAppCycle"
     weather_data = {}
 
     for day in range(1, 31):
