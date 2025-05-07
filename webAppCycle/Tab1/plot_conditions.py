@@ -20,6 +20,24 @@ from matplotlib.patches import Polygon
 import psychrolib
 from psychrochart import PsychroChart
 from vienna_weather_july2024_data import load_weather_data
+import pandas as pd
+
+
+def group_hours_into_ranges(hours):
+    if not hours:
+        return "None"
+    hours = sorted(hours)
+    ranges = []
+    start = prev = hours[0]
+    for h in hours[1:]:
+        if h == prev + 1:
+            prev = h
+        else:
+            ranges.append((start, prev))
+            start = prev = h
+    ranges.append((start, prev))
+    return ", ".join(f"{s}–{e}" if s != e else f"{s}" for s, e in ranges)
+
 
 def render_conditions(selected_date: str):
     psychrolib.SetUnitSystem(psychrolib.SI)
@@ -34,7 +52,7 @@ def render_conditions(selected_date: str):
     # Comfort zone patch
     T_min, T_max = 23.0, 25.0
     RH_min_pct, RH_max_pct = 30, 60
-    rh_min, rh_max = RH_min_pct/100.0, RH_max_pct/100.0
+    rh_min, rh_max = RH_min_pct / 100.0, RH_max_pct / 100.0
     corners = [
         (T_min, 1000 * psychrolib.GetHumRatioFromRelHum(T_min, rh_min, pressure)),
         (T_min, 1000 * psychrolib.GetHumRatioFromRelHum(T_min, rh_max, pressure)),
@@ -56,14 +74,14 @@ def render_conditions(selected_date: str):
         }
     })
 
-       # Captions — white text on black boxes with white edges, auto‑spaced
+    # Captions — white text on black boxes with white edges, auto‑spaced
     captions = [
         "Green ▲ shows optimal comfort:\n24.5 °C, 50 % RH",
         "Shaded polygon is comfort zone:\n23–25 °C, 30–60 % RH",
         "Colored ● at key times:\n6 AM (red), 12 PM (yellow), 6 PM (blue), 12 AM (green)",
     ]
-    base_y   = 0.98
-    spacing  = 0.06
+    base_y = 0.98
+    spacing = 0.06
     for i, txt in enumerate(captions):
         ypos = base_y - i * spacing
         ax.text(
@@ -108,9 +126,9 @@ def render_conditions(selected_date: str):
         if (T_min <= r["Temperature"] <= T_max)
         and (RH_min_pct <= r["Relative Humidity (%)"] <= RH_max_pct)
     ]
-    zone_str = ", ".join(str(h) for h in sorted(zone_hours)) or "None"
+    zone_str = group_hours_into_ranges(zone_hours)
     ax.text(0.01, 0.8,
-            f"Hours in comfort zone: {zone_str}",
+            f"Hours in comfort zone/suggested hours to open the windows: {zone_str}",
             transform=ax.transAxes, fontsize=14, fontweight='bold',
             verticalalignment='top', horizontalalignment='left',
             color='black',
@@ -126,7 +144,7 @@ def render_conditions(selected_date: str):
         hr = int(row["Hour"])
         temp = row["Temperature"]
         rh_pct = row["Relative Humidity (%)"]
-        w = 1000 * psychrolib.GetHumRatioFromRelHum(temp, rh_pct/100.0, pressure)
+        w = 1000 * psychrolib.GetHumRatioFromRelHum(temp, rh_pct / 100.0, pressure)
         points.append((temp, w))
         ax.text(temp + 0.2, w + 0.0002, f"{hr}", fontsize=8, color='black')
         if hr in highlight_hours:
@@ -158,7 +176,7 @@ def render_conditions(selected_date: str):
     fig = ax.get_figure()
     st.pyplot(fig)
 
-   
+
 if __name__ == "__main__":
     st.title("Vienna July 2024 Weather on Psychrometric Chart")
     date = st.selectbox("Select date:", list(load_weather_data().keys()))
